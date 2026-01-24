@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "laravel-queue-worker",
+      "script": "/usr/bin/php",
+      "args": "/home/pitchburnersadmin/htdocs/pitchburners.com/artisan queue:work",
+      "watch": false,
+      "autorestart": true
+    }
+  ]
+}

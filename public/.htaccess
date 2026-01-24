@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Redirect all requests except /register to /coming-soon
+RewriteCond %{REQUEST_URI} !^/register$
+RewriteRule ^(.*)$ /coming-soon [R=301,L]
+
+# Send Requests to Laravel's index.php (if needed for other paths)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+

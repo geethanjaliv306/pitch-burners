@@ -1,0 +1,17 @@
+/* Error: 100 and 300px are incompatible.
+ *      ,
+ * 1717 |             max-width: calc(100 - 300px);
+ *      |                             ^^^^^^^^^^^
+ *      '
+ *   public\scss\style.scss 1717:29  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: 100 and 300px are incompatible.\a      \2577 \a 1717 \2502              max-width: calc(100 - 300px);\a      \2502                              ^^^^^^^^^^^\a      \2575 \a   public\\scss\\style.scss 1717:29  root stylesheet";
+}
