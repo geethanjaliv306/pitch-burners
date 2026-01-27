@@ -159,7 +159,7 @@
             <a class="{{ request()->routeIs('organizer-members')|| request()->routeIs('organizer-members.create')  ? 'active' : '' }}" href="{{route('organizer-members')}}">Organizer Admin</a>
           </li>
           <li>
-            <a class="{{ request()->routeIs('total-teams') || request()->routeIs('teamplayers') ? 'active' : '' }}" href="{{route('total-teams')}}">Teams</a>
+            <a class="{{ request()->routeIs('total-teams') || request()->routeIs('not-applied-teams') || request()->routeIs('teamplayers') ? 'active' : '' }}" href="{{route('total-teams')}}">Teams</a>
           </li>
           <li>
             <a class="{{ request()->routeIs('schedulematch') ? 'active' : '' }}" href="{{route('schedulematch')}}">Schedule Matches</a>

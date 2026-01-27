@@ -45,6 +45,15 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 $user = Auth::user();
 
+                // 🚫 Deleted account
+                if ($user->role == 3) {
+                    Auth::logout();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Your account is deleted. Please contact admin.'
+                    ]);
+                }
+
                 if ($user->role == 1) {
                     return response()->json(['success' => true, 'redirect_url' => route('dashboard')]);
                 }
