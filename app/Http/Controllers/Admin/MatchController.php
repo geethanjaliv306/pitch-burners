@@ -195,12 +195,25 @@ class MatchController extends Controller
 
     $rounds = $roundsQuery->get()->keyBy('id');
 
-    // ✅ Teams (filter by tournament if selected)
+    // ✅ FIXED: Build teams from matches instead of team.tournament_id
     if ($selectedTournamentId) {
-        $teams = $teams->filter(function ($team) use ($selectedTournamentId) {
-            return $team->tournament_id == $selectedTournamentId;
-        });
+
+        $teamIds = $matches
+            ->where('tournament_id', (int)$selectedTournamentId)
+            ->flatMap(function ($match) {
+                return [
+                    (int)$match->team1,
+                    (int)$match->team2
+                ];
+            })
+            ->unique()
+            ->values();
+
+        $teams = $teams->filter(function ($team) use ($teamIds) {
+            return $teamIds->contains((int)$team->id);
+        })->values();
     }
+
 
     // ✅ Optional: preload selected venue
     $selectedVenue = $selectedVenueId
@@ -228,7 +241,10 @@ class MatchController extends Controller
             return false;
         }
 
-        if ($selectedTeamId && !in_array($selectedTeamId, [$match['team1'], $match['team2']])) {
+        if ($selectedTeamId && !in_array((int)$selectedTeamId, [
+            (int)$match['team1'],
+            (int)$match['team2']
+        ])) {
             return false;
         }
 

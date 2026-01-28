@@ -452,7 +452,11 @@ justify-content: center;
         <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['tournament_id' => null]) }}">All Tournaments</a></li>
             @foreach($tournaments as $tournament)
-                <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['tournament_id' => $tournament->id]) }}">{{ $tournament->name }}</a></li>
+                <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery([
+    'tournament_id' => $tournament->id,
+    'team_id' => null
+]) }}"
+>{{ $tournament->name }}</a></li>
             @endforeach
         </ul>
     </div>
@@ -494,12 +498,17 @@ justify-content: center;
     </ul>
 </div>
                      
-
     <!-- Team Dropdown -->
     <div class="dropdown teamdropdown drp">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <label>SELECT <span>TEAM</span></label>
-            <p>{{ $selectedTeamId ? $teams->firstWhere('id', $selectedTeamId)->name : 'All Teams' }}</p>
+        @php
+            $selectedTeam = $selectedTeamId
+                ? $teams->firstWhere('id', (int)$selectedTeamId)
+                : null;
+        @endphp
+
+        <p>{{ $selectedTeam->name ?? 'All Teams' }}</p>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
            <li>
