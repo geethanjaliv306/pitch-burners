@@ -166,12 +166,18 @@ class MatchController extends Controller
 
     // Filters
     $selectedTournamentId = $request->get('tournament_id');
+    if ($selectedTournamentId === '') {
+    $selectedTournamentId = null;
+   }
     $selectedTeamId       = $request->get('team_id');
     $selectedVenueId      = $request->get('venue_id');
     $selectedStatus       = $request->get('status');
     $selectedGroupId      = $request->get('group_id');
     $selectedRoundId      = $request->get('round_id'); // ✅ no default, stays null until chosen
-
+// Only auto-select if NO filters are applied at all
+    if (!$request->has('tournament_id') && !$request->hasAny(['team_id', 'venue_id', 'status', 'group_id', 'round_id']) && $tournaments->isNotEmpty()) {
+        $selectedTournamentId = $tournaments->sortByDesc('start_date')->first()->id;
+    }
     // ✅ Groups (filter by tournament if selected)
     $groupsQuery = DB::table('groups')
         ->select('id', 'group_name', 'tournament_id')

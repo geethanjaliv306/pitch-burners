@@ -450,7 +450,7 @@ justify-content: center;
             <p>{{ $selectedTournamentId ? $tournaments->firstWhere('id', $selectedTournamentId)->name : 'All Tournaments' }}</p>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['tournament_id' => null]) }}">All Tournaments</a></li>
+           <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['tournament_id' => '']) }}">All Tournaments</a></li>
             @foreach($tournaments as $tournament)
                 <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery([
     'tournament_id' => $tournament->id,
@@ -535,7 +535,7 @@ justify-content: center;
         </ul>
     </div>
                       @if(
-    (request()->has('tournament_id') && $selectedTournamentId) ||
+    (request()->has('tournament_id') && request('tournament_id') !== '') ||
     (request()->has('team_id') && $selectedTeamId) ||
     (request()->has('venue_id') && $selectedVenueId) ||
     (request()->has('status') && $selectedStatus) ||
