@@ -45,15 +45,15 @@ class TeamsController extends Controller
                 'password' => 'required|string|confirmed|min:8',
             ]);
 
-           $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret'   => '6Ld8cacqAAAAAA295CV28wYl7knmpWyzokGtNIGK',
-                'response' => $request->input('g-recaptcha-response'),
-                'remoteip' => $request->ip(),
-            ]);
+        //    $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //         'secret'   => '6Ld8cacqAAAAAA295CV28wYl7knmpWyzokGtNIGK',
+        //         'response' => $request->input('g-recaptcha-response'),
+        //         'remoteip' => $request->ip(),
+        //     ]);
 
-            if (!$response->json('success')) {
-                return redirect()->route('register')->withErrors(['captcha' => 'Failed to validate captcha.']);
-            }
+        //     if (!$response->json('success')) {
+        //         return redirect()->route('register')->withErrors(['captcha' => 'Failed to validate captcha.']);
+        //     }
 
            // $logoPath = $request->file('logo') ? $request->file('logo')->store('uploads/team_logos', 'public') : null;
           

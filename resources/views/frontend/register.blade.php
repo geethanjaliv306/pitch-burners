@@ -160,10 +160,10 @@
                     <div class="error-container"></div>
                 </div>
               
-                  <div class="float-label-form-group mb-4" style="margin-top: 19px;">
+                  {{-- <div class="float-label-form-group mb-4" style="margin-top: 19px;">
                         <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6Ld8cacqAAAAANMe-wSiV9rKi9qtNx9xCDjdi4nE" required></div>  
                     </div>
-                 <div class="error-msg" id="captchaError" style="margin-top: -33px;"></div>
+                 <div class="error-msg" id="captchaError" style="margin-top: -33px;"></div> --}}
 
                 <div class="pwd-note">
                     <h6>Passwords should contain each of the following character types:</h6>
@@ -246,12 +246,12 @@ document.getElementById('company-logo').addEventListener('change', function(e) {
     }
 });
 
-  let recaptchaCompleted = false;
+//   let recaptchaCompleted = false;
   
-  function recaptchaCallback() {
-    recaptchaCompleted = true;
-    document.getElementById('captchaError').textContent = '';
-}
+//   function recaptchaCallback() {
+//     recaptchaCompleted = true;
+//     document.getElementById('captchaError').textContent = '';
+// }
   
 // Form validation
 document.addEventListener('DOMContentLoaded', function() {
@@ -333,10 +333,10 @@ document.getElementById('register-button').addEventListener('click', function() 
     const spinner = button.querySelector('.spinner');
     let hasErrors = false;
 
-   if (!recaptchaCompleted) {
-        document.getElementById('captchaError').textContent = 'Please complete the captcha';
-        hasErrors = true;
-    }
+//    if (!recaptchaCompleted) {
+//         document.getElementById('captchaError').textContent = 'Please complete the captcha';
+//         hasErrors = true;
+//     }
   
     // Validate all required fields
     const inputs = form.querySelectorAll('input[required]');
@@ -364,7 +364,7 @@ document.getElementById('register-button').addEventListener('click', function() 
         return;
     }
 
-   formData.append('g-recaptcha-response', grecaptcha.getResponse());
+//    formData.append('g-recaptcha-response', grecaptcha.getResponse());
     // Proceed with form submission
     button.disabled = true;
     buttonText.style.opacity = '0.7';
@@ -394,8 +394,8 @@ document.getElementById('register-button').addEventListener('click', function() 
                     }
                 }
               
-               grecaptcha.reset();
-               recaptchaCompleted = false;
+            //    grecaptcha.reset();
+            //    recaptchaCompleted = false;
               
                 generalError.textContent = 'Please correct the errors below';
                 generalError.classList.remove('d-none');
@@ -419,8 +419,8 @@ document.getElementById('register-button').addEventListener('click', function() 
         spinner.style.display = 'none';
         button.disabled = false;
         buttonText.style.opacity = '1';
-      recaptcha.reset();
-        recaptchaCompleted = false;
+    //   recaptcha.reset();
+    //     recaptchaCompleted = false;
         generalError.textContent = 'An unexpected error occurred. Please try again.';
         generalError.classList.remove('d-none');
     });
