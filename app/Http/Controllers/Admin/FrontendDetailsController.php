@@ -388,25 +388,29 @@ public function standings_view(Request $request)
         return view('frontend.venues',compact('venues'));
     }
   
-  public function stats(Request $request)
+public function stats(Request $request)
 {
-   // DEFAULT ball type
-      $ballType = $request->get('ball_type', 'Red Tennis');
+    // Get ball type - only use default if not explicitly set to empty
+    $ballType = $request->has('ball_type') ? $request->get('ball_type') : 'Red Tennis';
 
-      // Fetch tournaments
-      $tournaments = Tournament::whereNull('deleted_at')
-          ->where('ball_type', $ballType)
-          ->orderBy('start_date', 'desc')
-          ->get();
+    // Fetch tournaments
+    $tournaments = Tournament::whereNull('deleted_at')
+        ->when($ballType, function($q) use ($ballType) {
+            $q->where('ball_type', $ballType);
+        })
+        ->orderBy('start_date', 'desc')
+        ->get();
 
-      // Fetch teams
-      $teams = Team::whereExists(function ($q) use ($ballType) {
-          $q->select(DB::raw(1))
-            ->from('tournament_teams')
-            ->join('tournaments', 'tournaments.id', '=', 'tournament_teams.tournament_id')
-            ->whereColumn('teams.id', 'tournament_teams.team_id')
-            ->where('tournaments.ball_type', $ballType);
-      })->orderBy('teams.name')->get();
+    // Fetch teams
+    $teams = Team::whereExists(function ($q) use ($ballType) {
+        $q->select(DB::raw(1))
+          ->from('tournament_teams')
+          ->join('tournaments', 'tournaments.id', '=', 'tournament_teams.tournament_id')
+          ->whereColumn('teams.id', 'tournament_teams.team_id')
+          ->when($ballType, function($query) use ($ballType) {
+              $query->where('tournaments.ball_type', $ballType);
+          });
+    })->orderBy('teams.name')->get();
 
     // Initialize empty collections for stats
     $allPlayerStats = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 15);
@@ -544,7 +548,8 @@ public function standings_view(Request $request)
         'teams',
         'category',
         'topBatsman',
-        'topBowler'
+        'topBowler',
+        'ballType'
     ));
 }
 

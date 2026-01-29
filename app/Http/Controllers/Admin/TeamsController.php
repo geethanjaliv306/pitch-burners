@@ -93,7 +93,7 @@ class TeamsController extends Controller
             $teamName = $validatedData['name'] ;
 
             // $AdminEmail = ['team@dsignzmedia.in', 'pitchburnerscricketfoundation@gmail.com', 'santhoshrajan7520@gmail.com' , 'sapareshan@dsignzmedia.in' , 'cricket@pitchburners.com'];
-            $AdminEmail = ['sapares@dsignzmedia.in','bvishwa33@gmail.com','shyamsundarj27@gmail.com'];
+            $AdminEmail = ['sapareshan@dsignzmedia.in','bvishwa33@gmail.com','shyamsundarj27@gmail.com'];
 			//$AdminEmail = ['santhoshrajan7520@gmail.com' , 'sapareshan@dsignzmedia.in', 'al71one2002@gmail.com'];
           //$AdminEmail = ['ranjith@dsignzmedia.in'];
           

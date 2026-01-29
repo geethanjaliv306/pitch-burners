@@ -148,24 +148,23 @@
                     </select>
                 </div>
                 <div class="col-12 col-lg-2">
-                <select name="ball_type" class="form-select auto-submit" id="ballTypeSelect">
-                    <option value="">All Ball Types</option>
+                    <select name="ball_type" class="form-select auto-submit" id="ballTypeSelect">
+                        <option value="" {{ request('ball_type') === '' && request()->has('ball_type') ? 'selected' : '' }}>
+                            All Ball Types
+                        </option>
 
-                    <option value="Green Tennis"
-                        {{ request('ball_type', 'Red Tennis') === 'Green Tennis' ? 'selected' : '' }}>
-                        Box Cricket Tournament
-                    </option>
+                        <option value="Green Tennis" {{ request('ball_type') === 'Green Tennis' ? 'selected' : '' }}>
+                            Box Cricket Tournament
+                        </option>
 
-                    <option value="Red Tennis"
-                        {{ request('ball_type', 'Red Tennis') === 'Red Tennis' ? 'selected' : '' }}>
-                        Red Tennis Ball Tournament
-                    </option>
+                        <option value="Red Tennis" {{ !request()->has('ball_type') || request('ball_type') === 'Red Tennis' ? 'selected' : '' }}>
+                            Red Tennis Ball Tournament
+                        </option>
 
-                    <option value="White Ball"
-                        {{ request('ball_type', 'Red Tennis') === 'White Ball' ? 'selected' : '' }}>
-                        White Ball Tournament
-                    </option>
-                </select>
+                        <option value="White Ball" {{ request('ball_type') === 'White Ball' ? 'selected' : '' }}>
+                            White Ball Tournament
+                        </option>
+                    </select>
                 </div>
                 <div class="col-12 col-lg-2">
                     <input type="text" class="form-control auto-submit" name="player_name" id="searchPlayer" placeholder="🔍 Search By Player Name" value="{{ request()->get('player_name') }}">
