@@ -163,7 +163,12 @@
                                 <p>{{ $selectedTournamentId && $tournaments->firstWhere('id', $selectedTournamentId) ? $tournaments->firstWhere('id', $selectedTournamentId)->name : 'All Tournaments' }}</p>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="tournamentDropdown">
-                                <li><a class="dropdown-item" href="{{ route('teams.view') }}">All Tournaments</a></li>
+                                <li>
+                                    <a class="dropdown-item"
+                                    href="{{ request()->fullUrlWithQuery(['tournament_id' => 'all']) }}">
+                                        All Tournaments
+                                    </a>
+                                </li>
                                 @foreach($tournaments as $tournament)
                                     <li>
                                         <a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['tournament_id' => $tournament->id]) }}">

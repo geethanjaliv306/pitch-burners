@@ -115,17 +115,27 @@ class TeamsController extends Controller
   
       public function team_view(Request $request)
     {
-        $tournaments = Tournament::all();
+       $tournaments = Tournament::orderBy('start_date', 'desc')->get();
 
        // $selectedTournamentId = $request->input('tournament_id', $tournaments->first()->id ?? null);
        // $defaultTournamentId = Tournament::where('id', 13)->exists() ? 13 : null;
-          $defaultTournamentId = Tournament::orderBy('start_date', 'desc')->value('id');
-          $selectedTournamentId = $request->input('tournament_id', $defaultTournamentId);
+        //   $defaultTournamentId = Tournament::orderBy('start_date', 'desc')->value('id');
+        //   $selectedTournamentId = $request->input('tournament_id', $defaultTournamentId);
+        $selectedTournamentId = $request->input('tournament_id');
 
+            // Default: latest tournament
+    if (!$request->has('tournament_id')) {
+        $selectedTournamentId = optional($tournaments->first())->id;
+    }
+    // All tournaments selected
+    if ($selectedTournamentId === 'all') {
+        $selectedTournamentId = null;
+    }
         $query = Team::join('tournament_teams', 'teams.id', '=', 'tournament_teams.team_id')
             ->whereNull('teams.deleted_at')
             ->whereNull('tournament_teams.deleted_at')
-            ->select('teams.*');
+            ->select('teams.*')
+            ->distinct();
 
         if ($selectedTournamentId) {
             $query->where('tournament_teams.tournament_id', $selectedTournamentId);
