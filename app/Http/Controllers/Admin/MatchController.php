@@ -38,7 +38,8 @@ class MatchController extends Controller
     public function __construct() {
         $this->socket_port = 3000;
         //$this->base_url = explode(':', url('/'));
-       $this->base_url = 'https://socketpitchburners.geohomefinder.com';
+    //    $this->base_url = 'https://socketpitchburners.geohomefinder.com';
+        $this->base_url = 'https://pitchburners-socket.upskilllabs.in';
 
         $this->API_URL = url('/api');
         $this->SOCKET_BASE_URL = env('SOCKET_URL', $this->base_url);
