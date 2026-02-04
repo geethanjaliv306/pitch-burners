@@ -44,7 +44,7 @@ class MatchController extends Controller
         $this->API_URL = url('/api');
         $this->SOCKET_BASE_URL = env('SOCKET_URL', $this->base_url);
         $this->SOCKET_PORT = env('SOCKET_PORT', $this->socket_port);
-        $this->SOCKET_URL = $this->SOCKET_BASE_URL. ":" . $this->SOCKET_PORT;
+        $this->SOCKET_URL = $this->SOCKET_BASE_URL;
     }
     public function index($match_id)
      {
