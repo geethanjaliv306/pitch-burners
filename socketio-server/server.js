@@ -9,8 +9,8 @@ const app = express();
 
 // Create HTTPS server using the Let's Encrypt certificates
 const server = https.createServer({
-    cert: fs.readFileSync('/home/pitchburners/certs/fullchain.pem'),
-    key: fs.readFileSync('/home/pitchburners/certs/privkey.pem')
+        cert: fs.readFileSync('/etc/letsencrypt/live/pitchburners-socket.upskilllabs.in/fullchain.pem'),
+        key: fs.readFileSync('/etc/letsencrypt/live/pitchburners-socket.upskilllabs.in/privkey.pem')
 }, app);
 
 // Initialize socket.io with CORS settings to allow specific origins
