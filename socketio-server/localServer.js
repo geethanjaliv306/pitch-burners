@@ -1,22 +1,18 @@
 require('dotenv').config();
 const express = require('express');
-const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 
 const app = express();
 
-// Create HTTPS server using the Let's Encrypt certificates
-const server = https.createServer({
-    cert: fs.readFileSync('/home/pitchburners/certs/fullchain.pem'),
-    key: fs.readFileSync('/home/pitchburners/certs/privkey.pem')
-}, app);
+// Create HTTP server (NO SSL for local)
+const server = http.createServer(app);
 
-// Initialize socket.io with CORS settings to allow specific origins
+// Initialize socket.io with CORS settings
 const io = new Server(server, {
     cors: {
-        origin: "*", // Use your local Laravel domain here
+        origin: "*", // For local dev
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true
@@ -26,73 +22,85 @@ const io = new Server(server, {
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = process.env.PORT || 3000;
 
-// Middleware for enabling CORS globally in Express
+// Enable CORS for Express
 app.use(cors({
-    origin: "*", // Use your local Laravel domain here
+    origin: "*",
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }));
 
-// Basic route for testing server status
+// Test route
 app.get('/', (req, res) => {
-    res.send('Secure Socket.io server is running');
+    res.send('Local Socket.io HTTP server is running');
 });
 
-// Socket.io connection events
+// Socket.io events
 io.on('connection', (socket) => {
-    console.log('A user connected, socket id => ', socket.id);
+    console.log('User connected =>', socket.id);
 
     socket.on('set-present-match-data', (matchId) => {
         io.emit(`set-updated-match-data-${matchId}`, matchId);
         io.emit(`set-scoreboard-match-data-${matchId}`, matchId);
     });
+
     socket.on('update-match-score', (matchId) => {
         io.emit(`set-match-score-${matchId}`, matchId);
     });
+
     socket.on('set-match-status', (matchId) => {
-        io.emit(`get-match-status-${matchId}`, matchId); 
+        io.emit(`get-match-status-${matchId}`, matchId);
     });
+
     socket.on('update-players', (data) => {
-        io.emit(`updated-players-${data.match_id}`, data); 
+        io.emit(`updated-players-${data.match_id}`, data);
     });
+
     socket.on('innings-completed', (data) => {
-        io.emit(`set-innings-completed-${data.matchId}`, data)
-    })
+        io.emit(`set-innings-completed-${data.matchId}`, data);
+    });
+
     socket.on('undo-last-data', (matchId) => {
-        const timeOut = 1500;
         setTimeout(() => {
-            io.emit(`undo-live-match-${matchId}`, matchId)
-            io.emit(`undo-score-board-${matchId}`, matchId)
-            io.emit(`undo-live-score-${matchId}`, matchId)
-        }, timeOut)
-    })
+            io.emit(`undo-live-match-${matchId}`, matchId);
+            io.emit(`undo-score-board-${matchId}`, matchId);
+            io.emit(`undo-live-score-${matchId}`, matchId);
+        }, 1500);
+    });
+
     socket.on('join-match-center', (scheduleMatchId) => {
         socket.join(scheduleMatchId);
-
         getUserCount(scheduleMatchId);
     });
+
     socket.on('get-live-user', (data) => {
-        let count = data.map(scheduleMatchId => {
+        const count = data.map(scheduleMatchId => {
             const userCount = io.sockets.adapter.rooms.get(scheduleMatchId)?.size || 0;
-            return {scheduleMatchId, userCount}
+            return { scheduleMatchId, userCount };
         });
         io.emit('set-live-user', count);
-    })
+    });
+
     socket.on('leave-match', (scheduleMatchId) => {
         socket.leave(scheduleMatchId);
-
         getUserCount(scheduleMatchId);
-    })
+    });
+
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
 });
-function getUserCount(scheduleMatchId){
+
+// User count helper
+function getUserCount(scheduleMatchId) {
     const userCount = io.sockets.adapter.rooms.get(scheduleMatchId)?.size || 0;
-    io.emit(`live-user-count-${scheduleMatchId}`, {scheduleMatchId, userCount});
+    io.emit(`live-user-count-${scheduleMatchId}`, {
+        scheduleMatchId,
+        userCount
+    });
 }
-// Start the HTTPS server
+
+// Start HTTP server
 server.listen(PORT, HOST, () => {
-    console.log(`Secure Socket.io server is running on https://pitchburners.com:${PORT}`);
+    console.log(`Local Socket.io server running at http://localhost:${PORT}`);
 });
