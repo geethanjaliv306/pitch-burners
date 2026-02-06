@@ -3,8 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Updating system and installing dependencies"
-      - yum update -y
+      - echo "Installing system dependencies"
       - yum install -y unzip git php php-cli php-mbstring php-xml php-json php-pdo php-mysqlnd php-openssl
 
       # Install Composer
@@ -19,19 +18,15 @@ phases:
       - composer install --no-interaction --prefer-dist --optimize-autoloader
 
       # Setup Laravel environment
-      - echo "Setting up Laravel environment"
       - cp .env.example .env || true
       - php artisan key:generate || true
       - php artisan config:clear || true
       - php artisan cache:clear || true
-
-      # Fix permissions for Laravel
       - chmod -R 775 storage bootstrap/cache || true
 
   build:
     commands:
       - echo "Running Laravel build phase"
-      # If you have frontend (Vite/Mix), we can add npm build here later
 
   post_build:
     commands:
@@ -40,7 +35,6 @@ phases:
 artifacts:
   files:
     - '**/*'
-  discard-paths: no
 
 cache:
   paths:
