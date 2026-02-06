@@ -1,0 +1,40 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.1
+    commands:
+      - echo "Installing system dependencies"
+      - apt-get update -y
+      - apt-get install -y unzip git
+      - curl -sS https://getcomposer.org/installer | php
+      - mv composer.phar /usr/local/bin/composer
+
+  pre_build:
+    commands:
+      - echo "Installing PHP dependencies"
+      - composer install --no-interaction --prefer-dist --optimize-autoloader
+      - cp .env.example .env
+      - php artisan key:generate
+      - php artisan config:clear
+      - php artisan cache:clear
+
+  build:
+    commands:
+      - echo "Running Laravel build steps"
+      # Optional: run tests
+      # - php artisan test
+
+  post_build:
+    commands:
+      - echo "Build completed on `date`"
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
+
+cache:
+  paths:
+    - vendor/**/*
