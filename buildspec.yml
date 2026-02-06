@@ -16,8 +16,7 @@ phases:
       - echo "Installing Laravel dependencies"
       - export HOME=/root
       - export COMPOSER_HOME=/root/.composer
-      - composer install --no-interaction --prefer-dist --optimize-autoloader
-
+      - composer install 
       # Setup Laravel environment
       - cp .env.example .env || true
       - php artisan key:generate || true
