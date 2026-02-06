@@ -2,19 +2,16 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      php: 8.3
     commands:
-      - echo "Installing system dependencies"
-      - yum install -y unzip git php php-cli php-mbstring php-xml php-json php-pdo php-mysqlnd php-openssl
-
-      # Install Composer
-      - echo "Installing Composer"
-      - curl -sS https://getcomposer.org/installer | php
-      - mv composer.phar /usr/local/bin/composer
-      - composer --version
+      - echo "Using preinstalled PHP and Composer"
+      - php -v
+      - composer --version || curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
   pre_build:
     commands:
-      - echo "Installing PHP dependencies with Composer"
+      - echo "Installing Laravel dependencies"
       - composer install --no-interaction --prefer-dist --optimize-autoloader
 
       # Setup Laravel environment
@@ -26,7 +23,7 @@ phases:
 
   build:
     commands:
-      - echo "Running Laravel build phase"
+      - echo "Build phase completed"
 
   post_build:
     commands:
