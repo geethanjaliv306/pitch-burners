@@ -3,15 +3,19 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      php: 8.3
+      php: 8.1
     commands:
       - echo "Using preinstalled PHP and Composer"
+      - export HOME=/root
+      - export COMPOSER_HOME=/root/.composer
       - php -v
-      - composer --version || curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+      - composer --version || (curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer)
 
   pre_build:
     commands:
       - echo "Installing Laravel dependencies"
+      - export HOME=/root
+      - export COMPOSER_HOME=/root/.composer
       - composer install --no-interaction --prefer-dist --optimize-autoloader
 
       # Setup Laravel environment
