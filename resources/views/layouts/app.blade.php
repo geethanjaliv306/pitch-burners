@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
-     <link href="{{ asset('css/style.css') }}?v=1.0.5" rel="stylesheet" type="text/css" />
+     <link href="{{ asset('css/style.css') }}?v=1.0.6" rel="stylesheet" type="text/css" />
   </head>
   <style>
     .has-filter-dropdown .dropdown .btn{
