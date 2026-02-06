@@ -25,6 +25,7 @@ phases:
       - echo "Running Laravel build steps"
       # Optional: run tests
       # - php artisan test
+      #CHANGES IN THE FILES TO CHECK
 
   post_build:
     commands:
