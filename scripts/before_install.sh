@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-mkdir -p /var/www/html/pitchburners
-rm -rf /var/www/html/pitchburners/*
+sudo mkdir -p /var/www/html/pitchburners
+sudo rm -rf /var/www/html/pitchburners/*
